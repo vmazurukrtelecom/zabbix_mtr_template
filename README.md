@@ -34,12 +34,15 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 
 ```/usr/lib/zabbix/externalscripts/mtr.sh 3 1.1.1.1```
 
-5. add termplate
+5. add termplate 
 
 
 ---
 
 JSON Path tested at: https://jsonpath.com/
+
+
+$.report.hubs[?(@.host=='1.1.1.1')].Javg
 
 example json:
 ```{
