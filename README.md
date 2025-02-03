@@ -1,16 +1,17 @@
 # Zabbix MTR Template
-# 
-# MTR homepage: https://www.bitwizard.nl/mtr/
-#
-# this template inspired by https://github.com/brunosantos-shell/mtr_json_zabbix
-#
-# in contrast to mtr_json_zabbix (using zabbix-agent)
-# this template based upon external scripts feature: 
-# REF: https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/external
-# REF2: https://www.zabbix.com/documentation/current/en/manual/appendix/command_execution
-# ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preprocessing/jsonpath_functionality
-# JSON Path tested at: https://jsonpath.com/
-# example json:
+
+MTR homepage: https://www.bitwizard.nl/mtr/
+
+this template inspired by https://github.com/brunosantos-shell/mtr_json_zabbix
+
+in contrast to mtr_json_zabbix (using zabbix-agent)
+this template based upon external scripts feature: 
+REF: https://www.zabbix.com/documentation/current/en/manual/config/items/itemtypes/external
+REF2: https://www.zabbix.com/documentation/current/en/manual/appendix/command_execution
+ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preprocessing/jsonpath_functionality
+
+JSON Path tested at: https://jsonpath.com/
+example json:
 ```{
   "report": {
     "mtr": {
