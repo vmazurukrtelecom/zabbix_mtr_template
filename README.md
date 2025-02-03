@@ -19,6 +19,8 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 1. install MTR (i.e. ```sudo dnf install mtr```)
 2. check location of external scripts: ``` sudo cat /etc/zabbix/zabbix_server.conf | grep external ```
 3. create external script:
+
+
 ``` echo '#!/usr/bin/env bash' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh```
 
 
@@ -28,6 +30,14 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 3. make executable: ```chmod +x /usr/lib/zabbix/externalscripts/mtr.sh```
 
 
+4. test script output:
+
+```/usr/lib/zabbix/externalscripts/mtr.sh 3 1.1.1.1```
+
+5. add termplate
+
+
+---
 
 JSON Path tested at: https://jsonpath.com/
 
