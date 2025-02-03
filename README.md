@@ -44,8 +44,6 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 JSON Path tested at: https://jsonpath.com/
 
 
-$.report.hubs[?(@.host=='1.1.1.1')].Javg
-
 example json:
 ```{
   "report": {
@@ -137,3 +135,10 @@ example json:
   }
 }
 ```
+
+```$.report.hubs[-1:]["Jttr"]``` results: ```\[ 1.038 \]```
+  1.393
+]
+
+
+altenatively can be specified ip ```$.report.hubs[?(@.host=='1.1.1.1')].Javg ```
