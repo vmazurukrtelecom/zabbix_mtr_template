@@ -1,8 +1,8 @@
 ## Zabbix MTR Template
 
-#### (designed to motinor network jitters and traceroute changes via zabbix triggers :)
+##### (designed to motinor network jitter and traceroute changes via zabbix triggers :)
 
-this template inspired by https://github.com/brunosantos-shell/mtr_json_zabbix
+This template inspired by https://github.com/brunosantos-shell/mtr_json_zabbix
 
 in contrast to mtr_json_zabbix (using zabbix-agent)
 this template based upon external scripts feature
@@ -17,7 +17,8 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 
 MTR homepage: https://www.bitwizard.nl/mtr/
 
-####HOWTO:
+
+##### HOWTO:
 1. install MTR (i.e. ```sudo dnf install mtr```)
 2. check location of external scripts: ``` sudo cat /etc/zabbix/zabbix_server.conf | grep external ```
 3. create external script:
