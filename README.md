@@ -37,7 +37,8 @@ MTR homepage: https://www.bitwizard.nl/mtr/
 
 ```/usr/lib/zabbix/externalscripts/mtr.sh 3 1.1.1.1```
 
-5. add termplate 
+5. add host (i.e. 1.1.1.1) and template to this host
+
 
 
 ---
