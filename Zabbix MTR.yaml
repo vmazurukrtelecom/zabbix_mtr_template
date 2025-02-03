@@ -1,0 +1,197 @@
+zabbix_export:
+  version: '7.2'
+  template_groups:
+    - uuid: 36bff6c29af64692839d077febfc7079
+      name: 'Templates/Network devices'
+  templates:
+    - uuid: 622582e273fa4e24b9d295198a91f2eb
+      template: 'Zabbix MTR'
+      name: 'Zabbix MTR'
+      description: |
+        Based on Template Net ICMP Ping
+        
+        REF:
+        https://github.com/vmazurukrtelecom/zabbix_mtr_template/
+      groups:
+        - name: 'Templates/Network devices'
+      items:
+        - uuid: 50280f5d72044fd7b22a6e9da3bb2968
+          name: 'MTR json'
+          type: EXTERNAL
+          key: 'mtr.sh[3,"{HOST.CONN}"]'
+          delay: 3m
+          value_type: TEXT
+          timeout: 60s
+        - uuid: 8dbc437732de4dafb22f3d62792aac24
+          name: 'traceroute hosts count'
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,hosts_count]'
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[-1:]["count"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+        - uuid: 1b872dbf1ad14b6ebcdd08c11aea9893
+          name: Jmax
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,Jmax]'
+          value_type: FLOAT
+          status: DISABLED
+          description: |
+            TRY: $.report.hubs[?(@.host=='{HOST.CONN}')]["Jmax"]
+            but in preprocessing {HOST.CONN} sustitution does not work
+            so - only indexing avalaible (i.e. [-1:])
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[?(@.host==''{HOST.CONN}'')]["Jmax"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+        - uuid: ee450febe9b94286b64eab16168baf93
+          name: Jitter
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,Jttr]'
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[-1:]["Jttr"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+        - uuid: 3457bcbbb58a4e08b370f32ea69fb64b
+          name: Last
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,Last]'
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[-1:]["Last"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+        - uuid: a4806537d5344a14a9b99bf2773ca6ec
+          name: Loss%
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,Loss]'
+          value_type: FLOAT
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[-1:]["Loss%"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+        - uuid: 2c28286b9af441b88dac882d78202098
+          name: 'traceroute (host4_to_last)'
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,traceroute3-last]'
+          value_type: TEXT
+          description: |
+            to limit hosts in traceroute - specify [<start>:<end>]  in reprocessing step 1 
+            i.e. from 4 to last host in traceroute: $.report.hubs[3:]["host"]
+            
+            !! indexing starts with "0" !!
+            
+            [<start>:<end>]	Match array elements by the defined range:
+            <start> - the first index to match (including); if not specified, matches all array elements from the beginning; if negative, specifies starting offset from the end of array;
+            <end> - the last index to match (excluding); if not specified, matches all array elements to the end; if negative, specifies starting offset from the end of array.
+            
+            example: 
+            
+            al hosts:
+            
+            $.report.hubs[:]["count","host"]
+            
+            [
+              "10.0.2.2",
+              "192.168.1.1",
+              "???",
+              "162.158.100.7",
+              "1.1.1.1"
+            ]
+            
+            from 4-th to last: 
+            
+            $.report.hubs[3:]["count","host"]
+            example: 
+            [
+              "162.158.100.7",
+              "1.1.1.1"
+            ]
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[3:]["host"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+          triggers:
+            - uuid: 2ec9133572c74d6198eac4c67312aadb
+              expression: 'last(/Zabbix MTR/mtr.sh[3,HOST,traceroute3-last],#1) <> last(/Zabbix MTR/mtr.sh[3,HOST,traceroute3-last],#2) and length(last(/Zabbix MTR/mtr.sh[3,HOST,traceroute3-last]))>0'
+              name: 'Taceroute cganged! (traceroute host4-to-last)'
+              opdata: 'LAST: {ITEM.LASTVALUE1} PREV: {ITEM.LASTVALUE2}'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 5cd1b4a00359435db4c668cb0664614a
+          name: traceroute
+          type: DEPENDENT
+          key: 'mtr.sh[3,HOST,traceroute]'
+          value_type: TEXT
+          description: |
+            $.report.hubs[:]["count","host"]
+            example: 
+            [
+              "10.0.2.2",
+              "192.168.1.1",
+              "???",
+              "162.158.100.7",
+              "1.1.1.1"
+            ]
+          preprocessing:
+            - type: JSONPATH
+              parameters:
+                - '$.report.hubs[:]["host"]'
+              error_handler: DISCARD_VALUE
+            - type: TRIM
+              parameters:
+                - '[]'
+          master_item:
+            key: 'mtr.sh[3,"{HOST.CONN}"]'
+          triggers:
+            - uuid: 4de6a36d10fe4cb997f538066bb4c6d2
+              expression: 'last(/Zabbix MTR/mtr.sh[3,HOST,traceroute],#1) <> last(/Zabbix MTR/mtr.sh[3,HOST,traceroute],#2) and length(last(/Zabbix MTR/mtr.sh[3,HOST,traceroute]))>0'
+              name: 'Taceroute cganged!'
+              opdata: 'LAST: {ITEM.LASTVALUE1} PREV: {ITEM.LASTVALUE2}'
+              status: DISABLED
+              priority: HIGH
+              manual_close: 'YES'
+      tags:
+        - tag: application
+          value: MTR
+        - tag: class
+          value: network
+        - tag: target
+          value: icmp
