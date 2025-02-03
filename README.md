@@ -21,7 +21,7 @@ ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preproces
 3. create external script:
 
 
-``` echo '#!/usr/bin/env bash' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh```
+```echo '#!/usr/bin/env bash' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh```
 
 
 ```echo '/sbin/mtr -c $1 -j -n -o "SRDLNBAWJMX" $2' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh ```
