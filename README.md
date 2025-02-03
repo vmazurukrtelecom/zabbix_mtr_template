@@ -137,8 +137,8 @@ example json:
 ```
 
 ```$.report.hubs[-1:]["Jttr"]``` results: ```[ 1.038 ]```
-  1.393
-]
+
+where "-1" - its "last"
 
 
 altenatively can be specified ip ```$.report.hubs[?(@.host=='1.1.1.1')].Javg ```
