@@ -136,7 +136,7 @@ example json:
 }
 ```
 
-```$.report.hubs[-1:]["Jttr"]``` results: ```\[ 1.038 \]```
+```$.report.hubs[-1:]["Jttr"]``` results: ```[ 1.038 ]```
   1.393
 ]
 
