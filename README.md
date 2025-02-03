@@ -15,8 +15,18 @@ REF2: https://www.zabbix.com/documentation/current/en/manual/appendix/command_ex
 
 ADDIT: https://www.zabbix.com/documentation/7.2/en/manual/config/items/preprocessing/jsonpath_functionality
 
+* HOWTO:
+1. install MTR (i.e. ```sudo dnf install mtr```)
+2. check location of external scripts: ``` sudo cat /etc/zabbix/zabbix_server.conf | grep external ```
+3. create external script:
+``` echo '#!/usr/bin/env bash' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh
+echo '/sbin/mtr -c $1 -j -n -o "SRDLNBAWJMX" $2' | sudo tee -a /usr/lib/zabbix/externalscripts/mtr.sh ```
+3. ```chmod +x /usr/lib/zabbix/externalscripts/mtr.sh```
+
+
 
 JSON Path tested at: https://jsonpath.com/
+
 example json:
 ```{
   "report": {
