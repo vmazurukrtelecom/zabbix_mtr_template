@@ -1,4 +1,6 @@
-# Zabbix MTR Template
+## Zabbix MTR Template
+
+#### (significally -  to motinor network jitters and traceroute changes via zabbix triggers )
 
 MTR homepage: https://www.bitwizard.nl/mtr/
 
