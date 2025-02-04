@@ -37,7 +37,7 @@ MTR homepage: https://www.bitwizard.nl/mtr/
 
 ```/usr/lib/zabbix/externalscripts/mtr.sh 3 1.1.1.1```
 
-5. add host (i.e. 1.1.1.1) and template to this host
+5. import template "Zabbix MTR.yaml", add host (i.e. 1.1.1.1) and imported template to this host
 
 
 
